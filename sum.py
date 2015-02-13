@@ -6,17 +6,17 @@ total = 0
 count = 0
 
 while True:
-    line = input("integer: ")
-    if line:
         try:
-            number = int(line)
+            line = input()
+            if line:
+                number = int(line)
+                total += number
+                count += 1
         except ValueError as err:
             print(err)
             continue
-        total += number
-        count += 1
-    else:
-        break
+        except EOFError:
+            break
 
 if count:
     print ("count =", count, "total =", total, "mean =", total/count)
