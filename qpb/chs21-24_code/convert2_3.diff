@@ -1,0 +1,45 @@
+--- convert2_3.py (original)
++++ convert2_3.py (refactored)
+@@ -9,8 +9,8 @@
+         outfile.write(data)
+         outfile.close()
+ 
+-    except StandardError, e:
+-        print e
++    except Exception as e:
++        print(e)
+ 
+ def read_file(filename): 
+     infile = file(filename, "rb")
+@@ -19,24 +19,24 @@
+     major_version = int(file_version[0])
+     minor_version = int(file_version[2])
+     
+-    if major_version <> 1 or minor_version > 5:
+-        raise Exception, "Wrong file version"
++    if major_version != 1 or minor_version > 5:
++        raise Exception("Wrong file version")
+ 
+     infile.close()
+     return file_version, data
+ 
+ if __name__ == "__main__":
+     version = "1.1"
+-    filename = raw_input("Please enter a filename: ")
++    filename = input("Please enter a filename: ")
+     write_file(filename, version, "this is test data")
+-    print "File created, reading data from file"
++    print("File created, reading data from file")
+     new_version, data = read_file(filename)
+-    cents = 73L
++    cents = 73
+     quarters = cents / 25
+-    print "%s cents contains %s quarters" % (cents, quarters)
++    print("%s cents contains %s quarters" % (cents, quarters))
+ 
+     new_dict = {}
+-    if not new_dict.has_key(new_version):
++    if new_version not in new_dict:
+         new_dict[new_version] = filename
+ 
+ 

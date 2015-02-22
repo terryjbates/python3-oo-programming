@@ -1,0 +1,89 @@
+14.2.2 Raising exceptions
+
+>>> alist = [1, 2, 3]
+>>> element = alist[7] 
+Traceback (innermost last):
+  File “<stdin>”, line 1, in ?
+IndexError: list index out of range
+
+>>> raise IndexError("Just kidding")
+Traceback (innermost last):
+  File “<stdin>”, line 1, in ?
+IndexError: Just kidding
+
+14.2.4 Defining exceptions
+
+class MyError(Exception):
+    pass
+
+>>> raise MyError("Some information about what went wrong")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+__main__.MyError: Some information about what went wrong
+
+try:
+    raise MyError("Some information about what went wrong")
+except MyError as error:
+    print("Situation:", error)
+
+try:
+    raise MyError("Some information", "myFilename",3)
+except MyError as error:
+    print("Situation: problem {0} with file {1}: {2}".format((error.args[2],
+        error.args[1], error.args[0]))
+
+14.2.5 Debugging with assert
+
+>>> x = (1, 2, 3)
+>>> assert len(x)>5
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AssertionError
+
+14.2.7 Example
+
+def save_to_file(filename) :
+    try:
+        save_text_to_file(filename)
+        save_formats_to_file(filename)
+        save_prefs_to_file(filename)
+        .
+        .
+        .
+    except IOError:
+        ...handle the error...
+def save_text_to_file(filename):
+    ...lower-level call to write size of text...
+    ...lower-level call to write actual text data...
+    .
+    .
+    .
+
+14.2.8 Example
+
+def cell_value(string):
+    try:
+        return float(string)
+    except ValueError:
+        if string == "":
+            return 0
+        else:
+            return None
+
+def safe_apply(function, x, y, spreadsheet):
+    try:
+        return apply(function, (x, y, spreadsheet))
+    except TypeError:
+        return None
+
+14.3 With
+
+try:
+    infile = open(filename)
+    data = infile.read()
+finally:
+    infile.close()
+
+with open(filename) as infile:
+    data = infile.read()
+

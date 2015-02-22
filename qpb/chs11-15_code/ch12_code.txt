@@ -1,0 +1,103 @@
+12.1.3 Manipulating pathnames
+
+>>> import os
+>>> print(os.path.join('bin', 'utils', 'disktools'))
+bin\utils\disktools
+
+>>> import os
+>>> print(os.path.join('bin', 'utils', 'disktools'))
+bin/utils/disktools
+
+>>> import os
+>>> print(os.path.join('mydir\\bin', 'utils\\disktools\\chkdisk'))
+mydir\bin\utils\disktools\chkdisk
+
+>>> path1 = os.path.join('mydir', 'bin'); 
+>>> path2 = os.path.join('utils', 'disktools', 'chkdisk')
+>>> print(os.path.join(path1, path2))
+mydir\bin\utils\disktools\chkdisk
+
+>>> import os
+>>> print(os.path.split(os.path.join('some','directory', 'path')))
+('some\\directory', 'path')
+
+>>> import os
+>>> os.path.basename(os.path.join('some', 'directory', 'path.jpg'))
+'path.jpg'
+>>> os.path.dirname(os.path.join('some', 'directory', 'path.jpg'))
+'some\\directory'
+
+>>> os.path.splitext(os.path.join('some', 'directory', 'path.jpg'))
+'some/directory/path', '.jpg')
+
+12.1.4 Useful constants and functions
+
+>>> import os
+>>> os.name
+'nt'
+
+import os
+if os.name == 'posix':
+    root_dir = "/"
+elif os.name == 'nt':
+    root_dir = "c:\\"
+else:
+    print("Don't understand this operating system!")
+
+12.2. Getting information about files
+
+>>> import os
+>>> os.path.exists('C:\\Documents and Settings\\vern\\My Documents')
+True
+>>> os.path.exists('C:\\Documents and Settings\\vern\\My Documents\\Letter.doc')
+True
+>>> os.path.exists('C:\\Documents and Settings\\vern\\\My Documents\\ljsljkflkjs')
+False
+>>> os.path.isdir('C:\\Documents and Settings\\vern\\My Documents')
+True
+>>> 	os.path.isfile('C:\\Documents and Settings\\vern\\My Documents')
+False
+>>> os.path.isdir('C:\\Documents and Settings\\vern\\My Documents
+\\Letter.doc')
+False
+>>> os.path.isfile('C:\\Documents and Settings\\vern\\My Documents\\Letter.doc')
+True
+
+12.3 More file system operations
+
+>>> os.chdir(os.path.join('c:','my documents', 'tmp'))
+>>> os.listdir(os.curdir)
+['book1.doc.tmp', 'a.tmp', '1.tmp', '7.tmp', '9.tmp', 'registry.bkp']
+
+>>> import glob
+>>> glob.glob("*")
+['book1.doc.tmp', 'a.tmp', '1.tmp', '7.tmp', '9.tmp', 'registry.bkp']
+>>> glob.glob("*bkp")
+['registry.bkp']
+>>> glob.glob("?.tmp")
+['a.tmp', '1.tmp', '7.tmp', '9.tmp']
+>>> glob.glob("[0-9].tmp")
+['1.tmp', '7.tmp', '9.tmp']
+
+>>> os.rename('registry.bkp', 'registry.bkp.old')
+>>> os.listdir(os.curdir)
+['book1.doc.tmp', 'a.tmp', '1.tmp', '7.tmp', '9.tmp', 'registry.bkp.old']
+
+>>> os.makedirs('mydir')
+>>> os.listdir(os.curdir)
+['mydir', 'a.tmp', '1.tmp', '7.tmp', '9.tmp', 'registry.bkp.old']
+>>> os.path.isdir('mydir')
+True
+
+>>> os.rmdir('mydir')
+>>> os.listdir(os.curdir)
+['a.tmp', '1.tmp', '7.tmp', '9.tmp', 'registry.bkp.old']
+
+12.4 Processing a directory subtree
+
+import os
+for root, dirs, files in os.walk(os.curdir):
+    print(root, "has",len(files), "files")
+    if ".git" in dirs:     
+        dirs.remove(".git")
+

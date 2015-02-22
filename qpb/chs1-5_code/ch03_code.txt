@@ -1,0 +1,271 @@
+3.2.1 Numbers
+
+>>> x = 5 + 2 - 3 * 2    
+>>> x
+1
+>>> 5/2
+2.5 
+>>> 5//2
+2  
+>>> 5 % 2
+1
+>>> 2**8
+256
+>>> 1000000001 ** 3
+1000000003000000003000000001
+
+>>> x = 4.3 ** 2.4
+>>> x
+33.137847377716483
+>>> 3.5e30 * 2.77e45   
+9.6950000000000002e+75
+>>> 1000000001.0 ** 3 
+1.000000003e+27
+
+>>> (3 + 2j) ** (2 + 3j)
+(0.68176651908903363-2.1207457766159625j)
+>>> x = (3+2j) * (4+9j)
+>>> x
+(-6+35j)
+>>> x.real 
+-6.0
+>>> x.imag 
+35.0
+
+>>> round(3.49)
+3
+>>> import math
+>>> math.ceil(3.49)
+4
+
+>>> x = False
+>>> x
+False
+>>> not x
+True
+>>> y = True * 2 
+>>> y = 2
+
+3.2.2 Lists
+
+>>> x = ["first", "second", "third", "fourth"]
+>>> x[0]
+'first' 
+>>> x[2]
+'third'
+>>> x[-1]
+'fourth'
+>>> x[-2]
+'third'
+>>> x[1:-1]
+['second', 'third']
+>>> x[0:3] 
+['first', 'second', 'third']
+>>> x[-2:-1]
+['third']
+>>> x[:3]
+['first', 'second', 'third']
+>>> x[-2:]
+['third', 'fourth']
+
+>>> x = [1,2,3,4,5,6,7,8,9]
+>>> x[1] = "two"
+>>> x[8:9] = []
+>>> x
+[1, 'two', 3, 4, 5, 6, 7, 8]
+>>> x[5:7] = [6.0, 6.5, 7.0] 
+>>> x
+[1, 'two', 3, 4, 5, 6.0, 6.5, 7.0, 8]
+>>> x[5:] 
+[6.0, 6.5, 7.0, 8]
+
+>>> x = [1,2,3,4,5,6,7,8,9]
+>>> len(x)
+9
+>>> [-1,0] + x
+[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> x.reverse() 
+>>> x
+[9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+3.2.3 Tuples
+
+( )
+(1,)
+(1, 2, 3, 4, 5, 6, 7, 8, 12)
+(1, "two", 3L, 4.0, ["a", "b"], (5,6))
+
+>>> x = [1,2,3,4]
+>>> tuple(x)
+(1, 2, 3, 4)
+
+>>> x = (1,2,3,4)
+>>> list(x)
+[1, 2, 3, 4]
+
+3.2.4. Strings
+
+>>> x = "live and     let \t   \tlive"
+>>> x.split()
+['live', 'and', 'let', 'live']
+>>> x.replace("    let \t   \tlive", "enjoy life")
+'live and enjoy life'
+>>> import re
+>>> regExpr = re.compile(r"[\t ]+")
+>>> regExpr.sub(" ", x)
+'live and let live'
+
+>>> e = 2.718
+>>> x = [1, "two", 3, 4.0, ["a", "b"], (5,6)]
+>>> print("The constant e is:", e, "and the list x is:", x)
+The constant e is: 2.718 and the list x is: [1, 'two', 3, 4.0, 
+['a', 'b'], (5, 6)]
+>>> print("the value of %s is: %.2f"  %  ("e", e))
+the value of e is: 2.72
+
+3.2.5 Dictionaries
+
+>>> x = { 1:"one", 2:"two"}
+>>> x["first"] = "one"
+>>> x[("Delorme", "Ryan", 1995)] = (1,2,3)
+>>> list(x.keys())
+['first', 2, 1, ('Delorme', 'Ryan', 1995)]
+>>> x[1]
+'one'
+>>> x.get(1, "not available")
+'one'
+>>> x.get(4,"not available")
+'not available'
+
+3.2.6 Sets
+
+>>> x = set([1,2,3,1,3,5])
+>>> x
+{1, 2, 3, 5}
+>>> 1 in x
+True
+>>> 4 in x
+False
+>>>
+
+3.2.7 File Objects
+
+>>> f = open("myfile", "w")
+>>> f.write("First line with necessary newline character\n")
+44
+>>> f.write("Second line to write to the file\n")
+33
+>>> f.close()
+>>> f = open("myfile", "r")
+>>> line1 = f.readline()
+>>> line2 = f.readline()
+>>> f.close()
+>>> print(line1, line2)
+First line with necessary newline character
+ Second line to write to the file
+>>> import os
+>>> print(os.getcwd())
+c:\My Documents\test
+>>> os.chdir(os.path.join("c:","My Documents", "images"))
+>>> filename = os.path.join("c:", "My Documents",
+>>> "test", "myfile")
+>>> print(filename)
+c:\My Documents\test\myfile
+>>> f = open(filename, "r")
+>>> print(f.readline())
+First line with necessary newline character
+>>> f.close()
+
+3.3.2 If-elif-else
+
+x = 5
+if x < 5:
+    y = -1
+    z = 5
+elif x > 5:
+    y = 1
+    z = 11
+else:
+    y = 0
+    z = 10
+
+print(x, y, z)
+
+5 0 10
+
+3.3.3 While loop
+
+u, v, x, y = 0, 0, 100, 30
+while x > y:
+    u = u + y
+    x = x - y
+    if x < y +2:
+        v = v + x
+        x = 0
+    else:
+        v = v + y +2
+        x =x -y -2
+
+print(u, v)
+
+60 40
+
+
+3.3.4 for loop
+
+item_list = [3, "string1", 23, 14.0, "string2", 49, 64, 70]
+for x in item_list:
+    if not isinstance (x, int):
+        continue
+    if not x % 7:
+        print("found an integer divisible by seven: %d" % (x))
+        break
+
+found an integer divisible by seven: 49
+
+
+3.3.5 Functions
+
+>>> def funct1(x, y, z):
+...     value = x + 2*y + z**2
+...     if value > 0:
+...         return x + 2*y + z**2
+...     else:
+...         return 0 
+...
+>>> u, v = 3,4
+>>> funct1(u, v, 2)
+15
+>>> funct1(u, z=v, y=2)
+23
+>>> def funct2(x, y=1, z=1):
+...     return x + 2*y + z**2
+...
+>>> funct2(3, z=4)
+21
+>>> def funct3(x, y=1, z=1, *tup):
+...     print((x,y,z)+ tup)
+...
+>>> funct3(2)
+(2, 1, 1)
+>>> funct3(1,2,3,4,5,6,7,8,9)
+(1, 2, 3, 4, 5, 6, 7, 8, 9)
+>>> def funct4(x, y=1, z=1, **dict):
+...     print(x, y, z, dict)
+>>> funct4(1, 2, m=5, n=9, z=3)
+1 2 3 {'n': 9, 'm': 5}
+
+#.5 Object-oriented programming
+
+>>> import sh
+>>> c1 = sh.Circle()
+>>> c2 = sh.Circle(5, 15, 20)
+>>> print(c1)
+Circle of radius 1 at coordinates (0, 0)
+>>> print(c2)
+Circle of radius 5 at coordinates (15, 20)
+>>> c2.area()
+78.539749999999998
+>>> c2.move(5,6)
+>>> print(c2)
+Circle of radius 5 at coordinates (20, 26)

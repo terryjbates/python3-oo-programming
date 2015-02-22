@@ -1,0 +1,153 @@
+19.1 Types are objects, too
+>>> type(5)
+<class 'int'>
+>>> type(['hello', 'goodbye'])
+<class 'list'>
+
+>>> type_result = type(5)
+      >>> type(type_result)
+      <class 'type'>
+
+19.2 Using types
+
+>>> type("Hello") == type("Goodbye")
+True
+>>> type("Hello") == type(5)
+False
+
+19.3 Types and user-defined classes
+
+>>> class A:
+...     pass
+...
+>>> class B(A):
+...     pass
+...
+>>> b = B()
+>>> type(b)
+<class '__main__.B'>
+>>> b.__class__
+<class '__main__.B'>
+>>> b_class = b.__class__
+>>> b_class == B
+True
+>>> b_class.__name__
+'B'
+>>> b_class.__bases__
+(<class '__main__.A'>,)
+
+>>> class C:
+...     pass
+...
+>>> class D:
+...     pass
+...
+>>> class E(D):
+...     pass
+...
+>>> x = 12
+>>> c = C()
+>>> d = D()
+>>> e = E()
+>>> isinstance(x, E)
+False
+>>> isinstance(c, E)  
+False
+>>> isinstance(e, E)
+True
+>>> isinstance(e, D)
+True
+>>> isinstance(d, E)
+False
+>>> y = 12
+>>> isinstance(y, type(5))
+True
+
+>>> issubclass(C,D)
+False
+>>> issubclass(E,D)
+True
+>>> issubclass(D,D)
+True
+>>> issubclass(e.__class__,D)
+True
+
+19.1 Types are objects
+
+>>> type(5)
+<class 'int'>
+>>> type(['hello', 'goodbye'])
+<class 'list'>
+
+>>> type(5)
+<class 'int'>
+>>> type(['hello', 'goodbye'])
+<class 'list'>
+
+19.2 Using Types
+
+>>> type("Hello") == type("Goodbye")
+True
+>>> type("Hello") == type(5)
+False
+
+19.3 Types and user-defined classe
+
+>>> class A:
+...     pass
+>>> class B(A):
+...     pass
+
+>>> b = B()
+>>> type(b)
+<class '__main__.B'>
+
+>>> b.__class__
+<class '__main__.B'>
+
+>>> bClass = b.__class__
+>>> bClass == B
+True
+
+>>> bClass.__name__
+'B'
+
+>>> bClass.__bases__
+(<class '__main__.A'>,)
+
+>>> class C:
+...     pass
+...
+>>> class D:
+...     pass
+...
+>>> class E(D):
+...     pass
+...
+>>> x = 12
+>>> c = C()
+>>> d = D()
+>>> e = E()
+>>> isinstance(x, E)
+False
+>>> isinstance(c, E) 
+False
+>>> isinstance(e, E)
+True
+>>> isinstance(e, D) 
+True
+>>> isinstance(d, E) 
+False
+>>> y = 12
+>>> isinstance(y, type(5))
+True
+
+>>> issubclass(C,D)
+False
+>>> issubclass(E,D)
+True
+>>> issubclass(D,D) 
+True
+>>> issubclass(e.__class__,D)
+True
+

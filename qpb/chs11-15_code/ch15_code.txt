@@ -1,0 +1,413 @@
+15.1.1 Using a class instance as structure
+
+>>> class Circle:
+...     pass
+>>> my_circle = Circle()
+>>> my_circle.radius = 5
+>>> print(2 * 3.14 * my_circle.radius)
+31.4
+
+class Circle:
+    # By convention, "self" is always the name of the first argument of __init__. "self" will be
+    # set to the newly created circle instance, when __init__ is run.
+    def __init__(self): 
+        self.radius = 1
+# Now a bit of code to make use of the above class definition...
+# Create a Circle instance object.
+my_circle = Circle()
+# This makes use of the fact that the radius field is already initialized 
+print(2 * 3.14 * my_circle.radius)
+# The radius field can be overwritten.
+my_circle.radius = 5
+# This will print a different result than the previous print statement.
+print(2 * 3.14 * my_circle.radius)
+
+15.2 Instance variables
+
+class Circle:
+    def __init__(self):
+        self.radius = 1
+
+15.2 Methods
+
+class Circle:
+    def __init__(self):
+        self.radius = 1
+    def area(self):
+        return self.radius * self.radius * 3.14159
+
+>>> c = Circle() 
+>>> c.radius = 3
+>>> # Method invocation syntax consists of an instance, followed by a period, followed by
+>>> # the method to be invoked on the instance.
+>>> print(c.area())
+28.27431
+
+>>> print(Circle.area(c))
+28.27431
+
+
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+    def area(self):
+        return self.radius * self.radius * 3.14159
+
+c = Circle(5)
+
+15.4 Class variables
+
+class Circle:
+    pi = 3.14159
+    def __init__(self, radius):
+        self.radius = radius
+    def area(self):
+        return self.radius * self.radius * Circle.pi
+
+>>> Circle.pi
+3.1415899999999999
+>>> Circle.pi = 4
+>>> Circle.pi
+4
+>>> Circle.pi = 3.14159
+>>> Circle.pi
+3.1415899999999999
+
+>>> c = Circle(3)
+>>> c.area()
+28.27431
+
+>>> Circle
+<class '__main__.Circle'>
+>>> c.__class__
+<class '__main__.Circle'>
+
+>>> c.__class__.pi
+3.1415899999999999
+
+15.4.1 An oddity with Class variables
+
+class Circle:
+    pi = 3.14159
+    def __init__(self, radius):
+        self.radius = radius
+    def area(self):
+        return self.radius * self.radius * Circle.pi
+
+>>> c = Circle(3)
+>>> c.pi
+3.1415899999999999
+
+>>> c1 = Circle(1)
+>>> c2 = Circle(2)
+>>> c1.pi = 3.14
+>>> c1.pi
+3.14
+>>> c2.pi
+3.1415899999999999
+>>> Circle.pi
+3.1415899999999999
+
+15.5.1 Static methods
+
+>>> import circle
+>>> c1 = circle.Circle(1)
+>>> c2 = circle.Circle(2)
+>>> circle.Circle.total_area()
+15.70795
+>>> c2.radius = 3
+>>> circle.Circle.total_area()
+31.415899999999997
+
+>>> circle.__doc__
+'circle module: contains the Circle class.'
+>>> circle.Circle.__doc__
+'Circle class'
+>>> circle.Circle.area.__doc__
+'determine the area of the circle'
+
+15.5.2 Class methods
+
+>>> import circle_cm
+>>> c1 = circle_cm.Circle(1)
+>>> c2 = circle_cm.Circle(2)
+>>> circle_cm.Circle.total_area()
+15.70795
+>>> c2.radius = 3
+>>> circle_cm.Circle.total_area()
+31.415899999999997
+
+15.6 Inheritance
+
+class Square:
+    def __init__(self, side=1):
+        # "side" is the length of any side of the square.
+        self.side = side
+
+class Square:
+    def __init__(self, side=1, x=0, y=0):
+        self.side = side
+        self.x = x
+        self.y = y
+class Circle:
+    def __init__(self, radius=1, x=0, y=0):
+        self.radius = radius
+        self.x = x
+        self.y = y
+
+class Shape:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+# This line says 'Square' inherits from 'Shape'
+class Square(Shape): 
+    def __init__(self, side=1, x=0, y=0):
+        # Must make a call to the __init__ method of 'Shape'
+        super().__init__(x, y)
+        self.side = side
+# This line says 'Circle' inherits from 'Shape'
+class Circle(Shape): 
+    def __init__(self, r=1, x=0, y=0):
+        # Must make a call to the __init__ method of 'Shape'
+        super().__init__(x, y)
+        self.radius = r
+
+class Shape:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def move(self, deltaX, deltaY):
+        self.x = self.x + deltaX
+        self.y = self.y + deltaY
+
+>>> c = Circle(1)
+>>> c.move(3, 4)
+>>> c.x
+3
+>>> c.y
+4
+
+15.7 Inheritance with class and instance variables
+
+class P:
+    z = "Hello"
+    def set_p(self):
+        self.x = "Class P"
+    def print_p(self):
+         print(self.x)
+class C(P):
+    def set_c(self):
+        self.x = "Class C"
+    def print_c(self):
+        print(self.x)
+
+>>> c = C()
+>>> c.set_p()
+>>> c.print_p()
+Class P
+>>> c.print_c()
+Class P
+>>> c.set_c()
+>>> c.print_c()
+Class C
+>>> c.print_p()
+Class C
+
+>>> c.z; C.z; P.z
+'Hello'
+'Hello'
+'Hello'
+
+>>> C.z = "Bonjour"
+>>> c.z; C.z; P.z
+'Bonjour'
+'Bonjour'
+'Hello'
+
+>>> c.z = "Ciao"
+>>> c.z; C.z; P.z
+'Ciao'
+'Bonjour'
+'Hello'
+
+15.8 Private variables and methods
+
+class Mine:
+    def __init__(self):
+        self.x = 2
+        # Define __y as private by using leading double underscores.
+        self.__y = 3
+    def print_y(self):
+        print(self.__y)
+
+>>> m = Mine()
+>>> print(m.x)
+2
+
+>>> print(m.__y)
+Traceback (innermost last):
+  File “<stdin>”, line 1, in ?
+AttributeError: __y
+
+>>> m.print_y()
+3
+
+>>> dir(m)
+['_Mine__y', 'x', . . .]
+
+15.9 Using @property
+
+class Temperature:
+    def __init__(self):
+        self._temp_fahr = 0
+    @property
+    def temp(self):
+        return (self._temp_fahr - 32) * 5/9
+    @temp.setter    
+    def temp(self, new_temp):
+        self._temp_fahr = new_temp * 9/5 + 32
+
+>>> t = Temperature()
+>>> t._temp_fahr
+0
+>>> t.temp
+-17.777777777777779
+>>> t.temp = 34
+>>> t._temp_fahr
+93.200000000000003
+>>> t.temp
+34.0
+
+15.10 scope
+
+>>> import cs
+>>> c = cs.C()
+>>> c.m()
+Access local, global and built-in namespaces directly
+local namespace: ['lv', 'p', 'self']
+parameter: p
+local variable: lv
+global namespace: ['C', 'mf', '__builtins__', '__file__', '__package__', 'mv', 'SC', '__name__', '__doc__']
+module variable: mv
+module function (can be used like a class method in other languages): MF()
+Access instance, class, and superclass namespaces through 'self'
+Instance namespace: ['_C__pcv', '_C__piv', '_C__pm', '_SC__pscv', '_SC__psiv', '_SC__spm', '__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'cv', 'iv', 'm', 'm2', 'scv', 'siv', 'sm']
+instance variable: self.xi
+private instance variable: self.__piv
+superclass instance variable: self.siv (but use SC.siv for assignment)
+Class namespace: ['_C__pcv', '_C__pm', '_SC__pscv', '_SC__spm', '__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'cv', 'm', 'm2', 'scv', 'sm']
+class variable: self.cv (but use C.cv for assignment)
+method: self.m2()
+class private variable: self.__pcv (but use C.__pcv for assignment)
+private method: self.__pm()
+Superclass namespace: ['_SC__pscv', '_SC__spm', '__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'scv', 'sm']
+superclass method: self.SM()
+superclass class variable: self.scv
+
+15.11 Destructors
+
+class SpecialFile:
+    def __init__(self, file_name):
+        self.__file = open(file_name, 'w')
+        self.__file.write('***** Start Special File *****\n\n')
+    def write(self, str):
+        self.__file.write(str)
+    def writelines(self, str_list):
+        self.__file.writelines(str_list)
+    def __del__(self):
+        print("entered __del__")
+        self.close()
+    def close(self):
+        if self.__file:
+            self.__file.write('\n\n***** End Special File *****')
+            self.__file.close()
+            self.__file = None
+def test():
+    f = SpecialFile('testfile')
+    f.write('111111\n')
+    f.close()
+
+>>> test()
+entered __del__ 
+
+>>> f = SpecialFile('testfile')
+>>> f = SpecialFile('testfile2')
+entered __del__
+
+
+
+class Circle:
+    def __init__(self, name, parent):
+        self.__name = name
+        self.__parent = parent
+        self.__child = None
+        if parent: 
+            parent._child = self
+    def cleanup(self):
+        self.__child = self.__parent = None
+    def __del__(self):
+        print("__del__ called on", self.__name)
+def test1():
+    a = Circle("a", None)
+    b = Circle("b", a)
+def test2():
+    c = Circle("c", None)
+    d = Circle("d", c)
+    d.cleanup()
+
+>>> test1()
+>>> test2()
+__del__ called on c
+__del__ called on d
+
+
+
+class Circle:
+    def __init__(self, name, parent):
+        self.__name = name
+        self.__parent = parent
+        self.__child = None
+        if parent: 
+            parent._child = self
+    def cleanup(self):
+        self.__child = self.__parent = None
+    def __del__(self):
+        print("__del__ called on", self.__name)
+def test1():
+    a = Circle("a", None)
+    b = Circle("b", a)
+def test2():
+    c = Circle("c", None)
+    d = Circle("d", c)
+    d.cleanup()
+def test3(x):
+    try:
+        c = Circle("c", None)
+        d = Circle("d", c)
+        if x == 1:
+            print("leaving test3 via a return")
+            return
+        if x == 2:
+            print("leaving test3 via an exception")
+            raise RuntimeError
+        print("leaving test3 off the end")
+    finally:
+        d.cleanup()
+
+>>> test3(0)
+leaving test3 off the end
+__del__ called on c
+__del__ called on d
+>>> test3(1)
+leaving test3 via a return
+__del__ called on c
+__del__ called on d
+>>> try:
+...     test3(2)
+... except RuntimeError:
+...     pass
+...
+leaving test3 via an exception
+__del__ called on c
+__del__ called on d
+

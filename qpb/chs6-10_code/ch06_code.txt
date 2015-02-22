@@ -1,0 +1,304 @@
+6.1 Strings as sequences
+
+
+>>> x = "Hello"
+>>> x[0]
+'H'
+>>> x[-1]
+'o'
+>>> x[1:]
+'ello'
+
+>>> x = "Goodbye\n"
+>>> x = x[:-1]
+>>> x
+'Goodbye'
+
+>>> len("Goodbye")
+7
+
+6.2 Basic String Operations
+
+>>> x = "Hello " + "World"
+>>> x
+'Hello World'
+
+>>> 8 * "x"
+'xxxxxxxx'
+
+6.2 Escape sequences
+
+>>> 'm'
+'m'
+>>> '\155'
+'m'
+>>> '\x6D'
+'m'
+
+>>> '\n'
+'\n'
+>>> '\012'
+'\n'
+>>> '\x0A'
+'\n'
+
+>>> unicode_a ='\N{LATIN SMALL LETTER A}'
+>>> unicode_a
+'a'
+>>> unicode_a_with_acute = '\N{LATIN SMALL LETTER A WITH ACUTE}'
+>>> unicode_a_with_acute
+'á'
+>>> "\u00E1"
+'á'
+>>>
+
+6.2 Evaluating special characters
+
+>>> 'a\n\tb'
+'a\n\tb'
+>>> print('a\n\tb')
+a
+	b
+
+>>> print("abc\n")
+abc
+
+>>> print("abc\n", end="")           
+abc
+>>>
+6.4.1 split and join
+
+>>> " ".join(["join", "puts", "spaces", "between", "elements"])
+'join puts spaces between elements'
+
+>>> "::".join(["Separated", "with", "colons"])
+'Separated::with::colons'
+
+>>> "".join(["Separated", "by", "nothing"])
+'Separatedbynothing'
+
+>>> x = "You\t\t can have tabs\t\n \t and newlines \n\n " \
+               "mixed in"
+>>> x.split()
+['You', 'can', 'have', 'tabs', 'and', 'newlines', 'mixed', 'in']
+>>> x = "Mississippi"
+>>> x.split("ss")
+['Mi', 'i', 'ippi']
+
+>>> x = 'a b c d'
+>>> x.split(' ', 1)
+['a', 'b c d']
+>>> x.split(' ', 2)
+['a', 'b', 'c d']
+>>> x.split(' ', 9)
+['a', 'b', 'c', 'd']
+
+
+6.4.1 converting to numbers
+
+>>> float('123.456')
+123.456
+>>> float('xxyy') 
+Traceback (innermost last):
+ File "<stdin>", line 1, in ?
+ValueError: invalid literal for float(): xxyy
+>>> int('3333')
+3333
+>>> int('123.456')
+Traceback (innermost last):
+ File "<stdin>", line 1, in ?
+ValueError: invalid literal for int() with base 10: 123.456
+>>> int('10000', 8)
+4096
+>>> int('101', 2)
+5
+>>> int('ff', 16)
+255
+>>> int('123456', 6)
+Traceback (innermost last):
+ File "<stdin>", line 1, in ?
+ValueError: invalid literal for int()with base 6: 123456
+
+
+6.4.3 Getting rid of whitespace
+
+>>> x = "  Hello,    World\t\t "
+>>> x.strip()
+'Hello,    World'
+>>> x.lstrip()
+'Hello,    World\t\t '
+>>> x.rstrip()
+'  Hello,    World'
+
+>>> import string
+>>> string.whitespace
+' \t\n\r\x0b\x0c'
+>>> " \t\n\r\v\f"
+' \t\n\r\x0b\x0c'
+
+>>> x = "www.python.org"
+>>> x.strip("w")
+'.python.org'
+>>> x.strip("gor")
+'www.python.'
+>>> x.strip(".gorw")
+'python'
+
+
+6.4.4 Searching
+
+>>> x = "Mississippi"
+>>> x.find("ss")
+2
+>>> x.find("zz")
+-1
+
+>>> x = "Mississippi"
+>>> x.find("ss", 3)
+5
+>>> x.find("ss", 0, 3)
+-1
+
+>>> x = "Mississippi"
+>>> x.rfind("ss")
+5
+
+>>> x = "Mississippi"
+>>> x.count("ss")
+2
+
+>>> x = "Mississippi"
+>>> x.startswith("Miss")
+True
+>>> x.startswith("Mist")
+False
+>>> x.endswith("pi")
+True
+>>> x.endswith("p")
+False
+
+>>> x.endswith(("i", "u"))
+True
+
+
+6.4.5 Modifying
+
+>>> x = "Mississippi"
+>>> x.replace("ss", "+++")
+'Mi+++i+++ippi'
+
+>>> x = "~x ^ (y % z)"
+>>> table = x.maketrans("~^()", "!&[]")
+>>> x.translate(table)
+'!x & [y % z]'
+
+
+6.4.6 Modifying with list manipulations
+
+>>> text = "Hello, World"
+>>> wordList = list(text)
+>>> wordList[6:] = []
+>>> wordList.reverse()
+>>> text = "".join(wordList)
+>>> print(text)
+,olleH
+
+6.4.7 Useful methods and constants
+
+>>> x = "123"
+>>> x.isdigit()
+True
+>>> x.isalpha()
+False
+>>> x = "M"
+>>> x.islower()
+False
+>>> x.isupper()
+True
+>>>
+
+6.5 converting objects to strings
+
+>>> repr([1, 2, 3])
+'[1, 2, 3]'
+>>> x = [1]
+>>> x.append(2)
+>>> x.append([3, 4])
+>>> 'the list x is ' + repr(x)
+'the list x is [1, 2, [3, 4]]'
+
+>>> repr(len)
+'<built-in function len>'
+
+6.6 formatting with %
+
+>>> "%s is the %s of %s" % ("Ambrosia", "food", "the gods")
+'Ambrosia is the food of the gods'
+
+>>> "%s is the %s of %s" % ("Nectar", "drink", "gods")
+'Nectar is the drink of gods'
+>>> "%s is the %s of the %s" % ("Brussels Sprouts", "food", 
+...        "foolish")
+'Brussels Sprouts is the food of the foolish'
+
+>>> x = [1, 2, "three"]
+>>> "The %s contains: %s"%("list", x)
+"The list contains: [1, 2, 'three']"
+
+
+6.6.1 formatting sequences
+
+>>> "Pi is <%-6.2f>" % 3.14159 # use of the formatting sequence: %–6.2f
+'Pi is <3.14  >'
+
+6.6.2 named parameters
+
+>>> num_dict = { 'e' : 2.718, 'pi' : 3.14159 }
+>>> print("%(pi).2f - %(pi).4f - %(e).2f" % num_dict)
+3.14 - 3.1416 - 2.72
+
+6.7.1 Format method
+
+>>> "{0} is the {1} of {2}".format("Ambrosia", "food", "the gods")
+'Ambrosia is the food of the gods'
+>>> "{{Ambrosia}} is the {0} of {1}".format("food", "the gods")
+'{Ambrosia} is the food of the gods'
+
+6.7.2 Format method, named params
+
+>>> "{food} is the food of {user}".format(food="Ambrosia", user="the gods") 
+'Ambrosia is the food of the gods'
+
+>>> "{0} is the food of {user[1]}".format("Ambrosia", 
+...          user = ["men", "the gods", "others"]) 
+'Ambrosia is the food of the gods'
+
+6.7.3 Format specifiers
+
+>>> "{0:10} is the food of gods".format("Ambrosia")
+'Ambrosia   is the food of gods'
+>>> "{0:{1}} is the food of gods".format("Ambrosia", 10)
+'Ambrosia   is the food of gods'
+>>> "{food:{width}} is the food of gods".format(food="Ambrosia", width=10) 
+'Ambrosia   is the food of gods'
+>>> "{0:>10} is the food of gods".format("Ambrosia")
+'  Ambrosia is the food of gods'
+>>> "{0:&>10} is the food of gods".format("Ambrosia")
+'&&Ambrosia is the food of gods'
+
+6.8 Bytes
+
+>>> unicode_a_with_acute = '\N{LATIN SMALL LETTER A WITH ACUTE}'
+>>> unicode_a_with_acute
+'á'
+>>> xb = unicode_a_with_acute.encode()
+>>> xb
+b'\xc3\xa1'
+>>> xb += 'A'
+Traceback (most recent call last):
+  File "<pyshell#35>", line 1, in <module>
+    xb += 'A'
+TypeError: can't concat bytes to str
+>>> xb.decode()
+'á'
+

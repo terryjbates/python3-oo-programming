@@ -1,0 +1,2 @@
+Z:\work>C:\Python31\python.exe testargs.py sole*.tst
+['testargs.py', 'sole*.tst']

@@ -1,0 +1,313 @@
+20.1 What is a special method attribute?
+
+>>> from color_module import Color
+>>> c = Color(15, 35, 3)
+
+>>> print(c)
+Color: R=15, G=35, B=3
+
+20.2.1 The __getitem__ attribute
+
+class LineReader:
+    def __init__(self, filename):
+        # Open the given file for reading.
+        self.fileobject = open(filename, 'r')
+    def __getitem__(self, index):
+        # Try to read in a line.
+        line = self.fileobject.readline()
+        # If there was no more data to be read   
+        if line == "":
+            #  close the fileobject.
+            self.fileobject.close()
+            #  and raise an IndexError to break out of any enclosing loop.
+            raise IndexError
+            # Otherwise, split the line and return first two fields.
+        else:
+            return line.split("::")[:2]
+
+
+20.3 Giving an object full list capability
+
+class TypedList:
+    def __init__(self, example_element, initial_list = []):
+        # The "example element" argument defines the type this list
+        # can contain by providing an example of the type of element.
+        self.type = type(example_element)
+        if not isinstance(initial_list, list):
+            raise TypeError("Second argument of TypedList must " 
+                          "be a list.")
+        for element in initial_list:
+                if not isinstance(element, self.type):
+                    raise TypeError("Attempted to add an element of " 
+                                  "incorrect type to a typed list.")
+        self.elements = initial_list[:]
+
+class TypedList:
+    def __init__(self, example_element, initial_list = []):
+        self.type = type(example_element)
+        if not isinstance(initial_list, list):
+            raise TypeError("Second argument of TypedList must " 
+                            "be a list.")
+        for element in initial_list: 
+            self.__check(element)
+        self.elements = initial_list[:]
+    def __check(self, element):
+        if type(element) != self.type:
+            raise TypeError("Attempted to add an element of " 
+                            "incorrect type to a typed list.")
+    def __setitem__(self, i, element):
+        self.__check(element)
+        self.elements[i] = element
+    def __getitem__(self, i):
+        return self.elements[i]
+
+>>> x = TypedList("", 5 * [""])
+>>> x[2] = "Hello"
+>>> x[3] = "There"
+>>> print(x[2] + ' ' + x[3])
+Hello There
+>>> a,b,c,d,e = x
+>>> a,b,c,d
+('', '', 'Hello', 'There')
+
+20.4.1 Subclassing list
+
+class TypedListList(list):
+    def __init__(self, example_element, initial_list = []):
+        self.type = type(example_element)
+        if not isinstance(initial_list, list):
+            raise TypeError("Second argument of TypedList must " 
+                            "be a list.")
+        for element in initial_list: 
+            self.__check(element)
+        super().__init__(initial_list)
+    def __check(self, element):
+        if type(element) != self.type:
+            raise TypeError("Attempted to add an element of " 
+                            "incorrect type to a typed list.")
+    def __setitem__(self, i, element):
+        self.__check(element)
+        super().__setitem__(i, element)
+
+>>> x = TypedListList("", 5 * [""])
+>>> x[2] = "Hello"
+>>> x[3] = "There"
+>>> print(x[2] + ' ' + x[3])
+Hello There
+>>> a,b,c,d,e = x
+>>> a,b,c,d
+('', '', 'Hello', 'There')
+>>> x[:]
+['', '', 'Hello', 'There', '']
+>>> del x[2]
+>>> x[:]
+['', '', 'There', '']
+>>> x.sort()
+>>> x[:]
+['', '', '', 'There']
+
+20.4.2 Subclassing UserList
+
+from collections import UserList
+class TypedUserList(UserList):
+    def __init__(self, example_element, initial_list = []):
+        super().__init__(initial_list)
+        self.type = type(example_element)
+        if not isinstance(initial_list, list):
+            raise TypeError("Second argument of TypedList must " 
+                            "be a list.")
+        for element in initial_list: 
+            self.__check(element)
+            # self.elements = initial_list[:]
+    def __check(self, element):
+        if type(element) != self.type:
+            raise TypeError("Attempted to add an element of " 
+                            "incorrect type to a typed list.")
+    def __setitem__(self, i, element):
+        self.__check(element)
+        self.data[i] = element
+    def __getitem__(self, i):
+        return self.data[i]
+
+>>> x = TypedUserList("", 5 * [""])
+>>> x[2] = "Hello"
+>>> x[3] = "There"
+>>> print(x[2] + ' ' + x[3])
+Hello There
+>>> a,b,c,d,e = x
+>>> a,b,c,d
+('', '', 'Hello', 'There')
+>>> x[:]
+['', '', 'Hello', 'There', '']
+>>> del x[2]
+>>> x[:]
+['', '', 'There', '']
+>>> x.sort()
+>>> x[:]
+['', '', '', 'There']
+
+20.6 Metaclasses
+
+class Spam:
+    def __init__(self, x):
+        self.x = x
+    def show(self):
+        print(self.x)
+
+>>> my_spam = Spam("test")
+>>> type(my_spam)
+<class '__main__.Spam'>
+>>> type(Spam)
+<class 'type'>
+>>> my_spam.show()
+test
+
+def __init__(self, x):
+    self.x = x
+def show(self):
+    print(self.x)
+Spam = type("spam", (object,), {'__init__':__init__, 'show':show})
+
+>>> my_spam = Spam("test")
+>>> type(my_spam)
+<class '__main__.spam'>
+>>> type(Spam)
+<class 'type'>
+>>> my_spam.show()
+test
+
+
+class NewType(type):
+   def __init__(cls, name, bases, methods):
+       print("Creating from NewType")
+       type.__init__(cls, name, bases, methods)
+       cls.new_attr = "test"
+def __init__(self, x):
+    self.x = x
+def show(self):
+    print(self.x)
+spam = NewType("spam", (object,), {'__init__':__init__, 'show':show})
+Creating from NewType
+>>> Spam.new_attr
+'test'
+>>> my_spam = Spam("test")
+>>> type(Spam)
+<class '__main__.NewType'>
+>>> type(my_spam)
+<class '__main__.Spam'>
+>>> my_spam.show()
+test
+
+class NewType(type):
+   def __init__(cls, name, bases, dict):
+       print("Creating from NewType")
+       cls.new_attr = "test"
+       type.__init__(cls, name, bases, dict)
+class Spam(metaclass=NewType):
+    def __init__(self, x):
+        self.x = x
+    def show(self):
+        print(self.x)
+
+Creating from NewType
+>>> Spam.new_attr
+'test'
+>>> my_spam = Spam("test")
+>>> type(Spam)
+<class '__main__.NewType'>
+>>> type(my_spam)
+<class '__main__.Spam'>
+>>> my_spam.show()
+test
+
+20.7.1 Using abstract base classes for type checking
+
+class TypedList:
+    def __init__(self, example_element, initial_list = []):
+        self.type = type(example_element)
+        if not isinstance(initial_list, list):
+            raise TypeError("Second argument of TypedList must " 
+                            "be a list.")
+        for element in initial_list: 
+            self.__check(element)
+        self.elements = initial_list[:]
+    def __check(self, element):
+        if type(element) != self.type:
+            raise TypeError("Attempted to add an element of " 
+                            "incorrect type to a typed list.")
+    def __setitem__(self, i, element):
+        self.__check(element)
+        self.elements[i] = element
+    def __getitem__(self, i):
+        return self.elements[i]
+
+>>> from collections import MutableSequence
+>>> issubclass(TypedList, MutableSequence)
+False
+>>> MutableSequence.register(TypedList)
+>>> issubclass(TypedList, MutableSequence)
+True
+>>> my_list = TypedList(1)
+>>> isinstance(my_list, MutableSequence)
+True
+
+20.7.2 Creating abstract base classes
+
+>>> from abc import ABCMeta
+>>> class MyABC(metaclass=ABCMeta):
+...     pass
+...
+>>> MyABC.register(list)
+>>> isinstance([1, 2, 3], MyABC)
+True
+
+20.7.3 using @abstract
+
+>>> from abc import ABCMeta
+>>> class MyABC(metaclass=ABCMeta):
+...     pass
+...
+>>> my_MyABC = MyABC()
+>>> print(type(my_MyABC))
+<class '__main__.MyABC'>
+
+>>> from abc import ABCMeta, abstractmethod
+>>> class MyABC(metaclass=ABCMeta):
+...     @abstractmethod
+...     def overrideme(self):
+...         print("in ABC")
+... 
+>>> my_MyABC = MyABC()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: Can't instantiate abstract class MyABC with abstract methods overrideme
+>>> class SecondABC(MyABC):
+...     pass
+>>> my_secondABC = SecondABC()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: Can't instantiate abstract class SecondABC with abstract methods overrideme
+
+>>> class SecondABC(MyABC):
+...     def overrideme(self):
+...         super().overrideme()
+...         print("in SecondABC")
+... 
+>>> my_secondABC = SecondABC()
+>>> my_secondABC.overrideme()
+in ABC
+in SecondABC
+
+from abc import ABCMeta, abstractproperty   
+class MyABC(metaclass=ABCMeta):
+    @abstractproperty
+    def readx(self):
+        return self.__x
+    def getx(self):  # read only
+        return self.__x
+    def gety(self):
+        return self.__y
+    def setx(self, x):
+        self.__x = x
+    x = abstractproperty(getx, setx)
+

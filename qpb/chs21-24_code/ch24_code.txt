@@ -1,0 +1,100 @@
+24.1
+>>> import sqlite3
+>>> conn = sqlite3.connect("datafile")
+
+>>> cursor = conn.cursor()
+
+>>> cursor.execute("create table test (name text, count integer)")
+>>> cursor.execute("insert into test (name, count) values ('Bob', 1)")
+>>> cursor.execute("insert into test (name, count) values (?, ?)", 
+                   ("Jill", 15))
+>>> cursor.execute("insert into test (name, count) values (:username, \
+                   :usercount)", {"username":"Joe", "usercount":10})
+>>> result = cursor.execute("select * from test")
+>>> print(result.fetchall())
+[('Bob', 1), ('Jill', 15), ('Joe', 10)]
+>>> result = cursor.execute("select * from test where name like :name", 
+                            {"name":"bob"})
+>>> print (result.fetchall())
+[('Bob', 1)]
+>>> cursor.execute("update test set count=? where name=?", (20, "Jill"))
+>>> result = cursor.execute("select * from test")
+>>> print(result.fetchall())
+[('Bob', 1), ('Jill', 20), ('Joe', 10)]
+>>> result = cursor.execute("select * from test")
+>>> for row in result:
+...     print(row)
+... 
+('Bob', 1)
+('Jill', 20)
+('Joe', 10)
+>>> cursor.execute("update test set count=? where name=?", (20, "Jill"))
+>>> conn.commit()
+>>> conn.close()
+
+24.2.1
+
+>>> from http.server import HTTPServer, SimpleHTTPRequestHandler
+>>> server = HTTPServer(("",8000), SimpleHTTPRequestHandler)
+>>> server.serve_forever()
+
+24.2.2 Writing an HTTP client
+
+>>> from urllib.request import urlopen
+>>> url_file = urlopen("http://localhost:8000")
+>>> print(url_file.geturl()
+http://localhost:8000
+>>> print(url_file.info())
+Server: SimpleHTTP/0.6 Python/3.1a1+
+Date: Sat, 06 Nov 2009 20:28:13 GMT
+Content-type: text/html; charset=utf-8
+Content-Length: 15395
+
+
+>>> for line in url_file.readlines():
+...     print(line)
+... 
+b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>\n'
+b'<title>Directory listing for /</title>\n'
+b'<body>\n'
+b'<h2>Directory listing for /</h2>\n'
+b'<hr>\n'
+b'<ul>\n'
+... 
+# file names would be in HTML links in list items here…
+...
+b'</ul>\n'
+b'<hr>\n'
+b'</body>\n'
+b'</html>\n'
+
+24.3.2 Using the wsgi library to create a basic web app
+
+from wsgiref.simple_server import make_server
+
+def hello_world_app(environ, start_response):
+    status = b'200 OK' # HTTP Status
+    headers = [(b'Content-type', b'text/plain; charset=utf-8')] # 
+    start_response(status, headers)
+
+    # The returned object is going to be printed
+    return [b"Hello World", environ]
+
+httpd = make_server('', 8000, hello_world_app)
+print("Serving on port 8000...")
+
+# Serve until process is killed
+httpd.serve_forever()
+
+24.4
+
+>>> import sqlite3
+>>> conn = sqlite3.connect("messagefile", \
+...           detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
+>>> cursor = conn.cursor()
+>>> cursor.execute("create table messages(user text, message text, \
+...                 ts timestamp)")
+>>> conn.commit()
+>>> conn.close()
+
+

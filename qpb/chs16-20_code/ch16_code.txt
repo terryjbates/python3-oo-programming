@@ -1,0 +1,29 @@
+16.2 Starting and using tkinter
+
+>>> from tkinter import *
+>>> import sys
+>>> win = Tk()
+>>> button = Button(win, text = "Goodbye", command = sys.exit)
+>>> button.pack()
+>>> mainloop()
+
+16.5 Creating widgets
+
+from tkinter import *
+main_window = Tk()
+label = Label(main_window, text="Hello", background='white', 
+              foreground='red', font='Times 20', 
+              relief='groove', borderwidth=3)
+label.grid(row=0, column=0)
+mainloop()
+
+16.6 Widget placement
+
+from tkinter import *
+win = Tk()
+button1 = Button(win, text="one")
+button2 = Button(win, text="two")
+button1.grid(row=0, column=0)
+button2.grid(row=1, column=1)
+mainloop()
+

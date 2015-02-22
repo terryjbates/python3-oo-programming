@@ -1,0 +1,186 @@
+09.1 Basic function definition
+
+>>> def fact(n): 
+...     """Return the factorial of the given number."""
+...     r = 1
+...     while n > 0:
+...         r = r * n
+...         n = n - 1
+...     return r
+...
+>>> fact(4)
+24
+>>> x = fact(4)
+>>> x 
+24
+
+09.2 Function parameter options
+
+>>> def power(x, y):
+...     r = 1
+...     while y > 0:
+...         r = r * x
+...         y = y - 1
+...     return r
+... 
+>>> power(3,3)
+27
+>>> power(3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: power() takes exactly 2 positional arguments (1 given)
+>>>
+>>> def power(x, y = 2):
+...     r = 1
+...     while y > 0:
+...         r = r * x
+...         y = y - 1
+...     return r
+...
+>>> power(3, 3)
+27
+>>> power(3)
+9
+>>> power(2, 3)
+8
+>>> power(3, 2)
+9
+>>> power(y=2, x=3)
+9
+
+9.2.3   Variable numbers of arguments
+
+>>> def maximum(*numbers):
+...     if len(numbers) == 0:
+...         return(None)
+...     else:
+...         max = numbers[0]
+...         for n in numbers[1:]:
+...             if n > max: 
+...                 max = n
+...         return max
+...
+>>> maximum(3, 2, 8)
+8
+>>> maximum(1, 5, 9, -2, 2)
+9
+        >>> def example_fun(x, y, **other):
+        ...     print("x: {0}, y: {1}, keys in 'other': {2}".format(x,
+        ...           y, list(other.keys())))
+        ...     other_total = 0
+        ...     for k in other.keys():
+        ...         other_total = other_total + other[k]
+        ...     print("The total of values in 'other' is {0}".format(other_total))
+
+>>> example_fun(2, y="1", foo=3, bar=4)
+x: 2 y: 1 ,keys in 'other': ['foo', 'bar']
+The total of values in 'other' is 7
+
+09.3 Mutable objects as arguments
+
+>>> def f(n, list1, list2):
+...    list1.append(3)
+...    list2 = [4, 5, 6]
+...    n = n+1
+...
+>>> x = 5
+>>> y = [1, 2]
+>>> z = [4, 5]
+>>> f(x, y, z)
+>>> x, y, z
+(5, [1, 2, 3], [4, 5])
+
+09.4 local, nonlocal and global variables
+
+>>> def fun():
+...     global a
+...     a = 1
+...     b = 2
+...
+>>> a = "one"
+>>> b = "two"
+>>> fun()
+>>> a
+1
+>>> b
+'two'
+
+09.5 Assigning functions to variables
+
+>>> def f_to_kelvin(degrees_f):
+...     return 273.15 + (degrees_f - 32) * 5/9.0
+...
+>>> def c_to_kelvin(degrees_c):
+...     return 273.15 + degrees_c
+...
+>>> abs_temperature = f_to_kelvin
+>>> abs_temperature(32)
+273.14999999999998
+>>> abs_temperature = c_to_kelvin
+>>> abs_temperature(0)
+273.14999999999998
+>>> t = { 'FtoK':f_to_kelvin, 'CtoK':c_to_kelvin }
+>>> t['FtoK'](32)
+273.14999999999998
+>>> t['CtoK'](0)
+273.14999999999998
+
+09.6 lambda expressions
+
+>>> t2 = { 'FtoK':lambda deg_f: 273.15+(deg_f-32)*5/9,
+...     'CtoK':lambda deg_c: 273.15+deg_c }
+>>> t2['FtoK'](32)
+273.14999999999998
+
+09.7 Generator functions
+
+>>> def four():
+...     x = 0
+...     while x < 4:
+...         print("in generator, x =", x) 
+...         yield x
+...         x += 1
+... 
+>>> for i in four():
+...     print(i)
+...
+in generator, x = 0
+0
+in generator, x = 1
+1
+in generator, x = 2
+2
+in generator, x = 3
+3
+
+>>> 2 in four()
+in generator, x = 0
+in generator, x = 1
+in generator, x = 2
+True
+>>> 5 in four()
+in generator,   x   =   0
+in generator,   x   =   1
+in generator,   x   =   2
+in generator,   x   =   3
+True
+
+09.8 Decorators
+
+      >>> def decorate(func):
+      ...     print("in decorate function, decorating", func.__name__)
+      ...     def wrapper_func(*args):
+      ...         print("Executing", func.__name__)
+      ...         return func(*args)
+      ...     return wrapper_func
+      ...
+      >>> def myfunction(parameter):
+      ...     print(parameter)
+      ...
+      >>> myfunction = decorate(myfunction)
+      in decorate function, decorating myfunction
+      >>> myfunction("hello")
+      Executing myfunction
+      hello
+
+
