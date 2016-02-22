@@ -8,12 +8,13 @@ class ConfigDict(dict):
         self.config_file = config_file
         try:
             with open(self.config_file, 'r') as fh:
+                # http://bit.ly/1oWKAxc
                 all_lines = (line.rstrip() for line in fh)
                 non_blank_lines = (line for line in all_lines if line)
                 for line in non_blank_lines:
                     line = line.strip()
                     (key, value) = line.split("=")
-                    print("{}:{}".format(key, value))
+                    #print("{}:{}".format(key, value))
                     self.__setitem__(key, value)
             self.write_dict_to_file()
         except Exception as ex:
@@ -23,7 +24,6 @@ class ConfigDict(dict):
         print("key:{}  value:{}".format(key, value))
         dict.__setitem__(self, key, value)
         self.write_dict_to_file()
-
 
     def write_dict_to_file(self):
         keys_list = self.keys()
