@@ -1,18 +1,13 @@
-#!/usr/bin/env python
-import json
+#!/usr/bin/env python3
 
 ADMIN_USER = 'admin'
 ADMIN_PWD = 'admin'
 import time
 from collections import defaultdict
 import json
-from functools import wraps
-
-
 
 
 class Db(defaultdict):
-
     def __init__(self, db_file=None):
         if db_file:
             try:
@@ -23,7 +18,7 @@ class Db(defaultdict):
                         self[key] = val
                 self.db_file = db_file
             except IOError as open_ex:
-                print(("Unable to open file due to: {}".format(open_ex)))
+                print("Unable to open file due to: {}".format(open_ex))
                 print("Creating {} as file".format(db_file))
                 self.db_file = db_file
         else:
@@ -34,11 +29,12 @@ class Db(defaultdict):
 
     def write_to_file(func):
         def wrapped(self=None):
-            #print("Wrapped shit! Using {}".format(self.db_file))
+            # print("Wrapped shit! Using {}".format(self.db_file))
             func(self)
             with open(self.db_file, 'w') as fd:
-                dump_dict ={key:val for key, val in list(self.items())}
+                dump_dict = {key: val for key, val in list(self.items())}
                 json.dump(dump_dict, fd)
+
         return wrapped
 
 
@@ -49,7 +45,7 @@ class Db(defaultdict):
 
     def dumpusers(self):
         for user, (passw, login_ts) in list(self.items()):
-            print(("{}:{}:{}".format(user, passw, login_ts)))
+            print("{}:{}:{}".format(user, passw, login_ts))
 
     @write_to_file
     def newuser(self):
@@ -71,7 +67,7 @@ class Db(defaultdict):
         passwd = self.get(name)[0]
         if passwd == pwd:
             pass
-            print(("You last logged in: {}".format(self.get(name)[1])))
+            print("You last logged in: {}".format(self.get(name)[1]))
         if name == ADMIN_USER:
             self.dumpusers()
         else:
@@ -81,34 +77,28 @@ class Db(defaultdict):
         print('welcome back', name)
 
     def showmenu(self):
+        choice = None
         prompt = """
     (N)ew User Login
     (E)xisting User Login
     (Q)uit
 
     Enter choice: """
+        while choice != 'q':
+            choice = raw_input(prompt)
+            choice = choice.lower()
+            print ("Choice after lowering :", choice)
 
-        done = 0
-        while not done:
-            chosen = 0
-            while not chosen:
-                try:
-                    choice = raw_input(prompt)[0]
-                except (EOFError, KeyboardInterrupt):
-                    choice = 'q'
-                print ('\nYou picked: [%s]' % choice)
-
-                if choice not in 'neq':
-                    print ('invalid menu option, try again')
-                else:
-                    chosen = 1
+            if choice not in 'neq':
+                print ('invalid menu option, try again')
 
             if choice == 'q':
-                done = 1
+                print ("Exiting...")
             if choice == 'n':
                 self.newuser()
             if choice == 'e':
                 self.olduser()
+
 
 if __name__ == '__main__':
     my_db = Db()
